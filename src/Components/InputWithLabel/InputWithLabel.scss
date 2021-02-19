@@ -1,0 +1,9 @@
+.InputWithLabel {
+  margin-bottom: var(--space-m);
+  &_label {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    margin-bottom: var(--space-xs);
+  }
+}

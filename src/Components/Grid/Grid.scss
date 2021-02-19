@@ -1,0 +1,22 @@
+.Grid {
+  display: grid;
+  gap: 0 var(--space-l);
+  padding-bottom: var(--space-l);
+  // 41 px = header height
+  height: calc(100vh - 41px - var(--space-l) * 2);
+  &_cols_1 {
+    grid-template-columns: 1fr;
+  }
+  &_cols_2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  &_cols_3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  &_cols_4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  & > div {
+    border: 1px solid #ff00d0
+  }
+}

@@ -1,0 +1,26 @@
+.SidebarSettings {
+  &_content {
+    margin: var(--space-l) var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+  }
+  &_mainHeading {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-m);
+    letter-spacing: 0.9px;
+  }
+  &_introParagraph {
+    margin-bottom: var(--space-m);
+  }
+  &_informer {
+    margin-bottom: var(--space-m);
+  }
+  &_ctaButton {
+    margin-top: var(--space-m);
+  }
+}
