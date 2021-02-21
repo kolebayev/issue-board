@@ -5,8 +5,6 @@ import { Button } from '@consta/uikit/Button'
 import { useStoreActions, Actions, useStoreState, State } from 'easy-peasy'
 import { ModelTypes } from '../../store/store'
 import logo from '../../images/logo.svg'
-import logo20 from '../../images/logo20.svg'
-import logo30 from '../../images/logo30.svg'
 
 type StoreActions = Actions<ModelTypes>
 type StoreState = State<ModelTypes>
@@ -21,7 +19,7 @@ function Header() {
   return (
     <div className="Header">
       <div className="Header_leftSide">
-        <img src={logo30} alt="Consta logo" className="Header_leftSide_logo" />
+        <img src={logo} alt="Consta logo" className="Header_leftSide_logo" />
         <Text view="primary" size="m">
           IssueDeck
         </Text>
