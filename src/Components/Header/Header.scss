@@ -6,4 +6,15 @@
   padding: var(--space-xs) var(--space-l);
   // box-shadow: 0 0 10px rgba(0,0,0,0.1);
   margin-bottom: var(--space-l);
+  &_leftSide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    line-height: normal;
+    &_logo {
+      margin-right: var(--space-xs);
+    }
+  }
+  &_leftSide:first-child {
+  }
 }
