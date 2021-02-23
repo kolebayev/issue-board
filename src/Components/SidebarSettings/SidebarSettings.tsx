@@ -37,19 +37,33 @@ function SidebarSettings() {
     (actions: StoreActions) => actions.setGithubToken
   )
 
+  const setIssuesList = useStoreActions(
+    (actions: StoreActions) => actions.setIssuesList
+  )
+
   const fetchIssues = async (
     githubToken: string,
     repoOwner: string,
     repoName: string
   ) => {
-    return await request('GET /repos/{owner}/{repo}/issues', {
-      headers: {
-        authorization: githubToken as string,
-      },
-      owner: repoOwner as string,
-      repo: repoName as string,
-      per_page: 100,
-    })
+    let resultFromAllPages = []
+    for (let i = 0; i < 10; i++) {
+      let result = await request('GET /repos/{owner}/{repo}/issues', {
+        headers: {
+          authorization: githubToken as string,
+        },
+        owner: repoOwner as string,
+        repo: repoName as string,
+        per_page: 100,
+        page: i,
+      })
+      if (result.data.length === 0) {
+        break
+      } else {
+        resultFromAllPages.push(...result.data)
+      }
+    }
+    return resultFromAllPages
   }
 
   const inputGroup = [
@@ -98,7 +112,12 @@ function SidebarSettings() {
           >
             IssueDeck — утилита для просмотра issues в открытых репозиториях
             GitHub. По умолчанию подключен репозиторий дизайн-системы
-            <Text view="link" size="l" as="a" href="">
+            <Text
+              view="link"
+              size="l"
+              as="a"
+              href="http://consta.gazprom-neft.ru"
+            >
               {' '}
               Consta
             </Text>
@@ -143,9 +162,9 @@ function SidebarSettings() {
           className="SidebarSettings_ctaButton"
           onClick={() => {
             if (githubToken && repoOwner && repoName) {
-              fetchIssues(githubToken, repoOwner, repoName).then((data) =>
-                console.log(data)
-              )
+              fetchIssues(githubToken, repoOwner, repoName).then((data) => {
+                setIssuesList(data)
+              })
             } else {
               alert('Не указан один из параметров запроса')
             }

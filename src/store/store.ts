@@ -9,6 +9,8 @@ export interface ModelTypes {
   setRepoName: Action<ModelTypes, string>
   githubToken: string | null
   setGithubToken: Action<ModelTypes, string>
+  issuesList: Object[] | null,
+  setIssuesList:  Action<ModelTypes, Object[]>
 }
 
 const model: ModelTypes = {
@@ -31,6 +33,11 @@ const model: ModelTypes = {
   setGithubToken: action((state, payload) => {
     state.githubToken = payload
   }),
+
+  issuesList: null,
+  setIssuesList: action((state, payload) => {
+    state.issuesList = [...payload]
+  })
 }
 
 const store = createStore(model)

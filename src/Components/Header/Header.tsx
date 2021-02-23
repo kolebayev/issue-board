@@ -26,7 +26,7 @@ function Header() {
       </div>
       <Button
         view="ghost"
-        label="А це шо?"
+        label="Что это такое?"
         size="xs"
         onClick={() => setSidebarSettingsIsOpen(!sidebarSettingsIsOpen)}
       />
