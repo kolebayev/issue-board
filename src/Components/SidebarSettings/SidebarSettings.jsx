@@ -6,54 +6,54 @@ import { Informer } from '@consta/uikit/Informer'
 import { Button } from '@consta/uikit/Button'
 import { IconClose } from '@consta/uikit/IconClose'
 import InputWithLabel from '../InputWithLabel/InputWithLabel'
-import { useStoreActions, Actions, useStoreState, State } from 'easy-peasy'
-import { ModelTypes } from '../../store/store'
+import { useStoreActions, useStoreState } from 'easy-peasy'
 import { request } from '@octokit/request'
-
-type StoreActions = Actions<ModelTypes>
-type StoreState = State<ModelTypes>
 
 function SidebarSettings() {
   const setSidebarSettingsIsOpen = useStoreActions(
-    (actions: StoreActions) => actions.setSidebarSettingsIsOpen
+    (actions) => actions.setSidebarSettingsIsOpen
   )
   const sidebarSettingsIsOpen = useStoreState(
-    (state: StoreState) => state.sidebarSettingsIsOpen
+    (state) => state.sidebarSettingsIsOpen
   )
   const closeSidebar = () => setSidebarSettingsIsOpen(!sidebarSettingsIsOpen)
 
-  const repoOwner = useStoreState((state: StoreState) => state.repoOwner)
+  const repoOwner = useStoreState((state) => state.repoOwner)
   const setRepoOwner = useStoreActions(
-    (actions: StoreActions) => actions.setRepoOwner
+    (actions) => actions.setRepoOwner
   )
 
-  const repoName = useStoreState((state: StoreState) => state.repoName)
+  const repoName = useStoreState((state) => state.repoName)
   const setRepoName = useStoreActions(
-    (actions: StoreActions) => actions.setRepoName
+    (actions) => actions.setRepoName
   )
 
-  const githubToken = useStoreState((state: StoreState) => state.githubToken)
+  const githubToken = useStoreState((state) => state.githubToken)
   const setGithubToken = useStoreActions(
-    (actions: StoreActions) => actions.setGithubToken
+    (actions) => actions.setGithubToken
   )
 
   const setIssuesList = useStoreActions(
-    (actions: StoreActions) => actions.setIssuesList
+    (actions) => actions.setIssuesList
+  )
+
+  const setRepoLabelsList = useStoreActions(
+    (actions) => actions.setRepoLabelsList
   )
 
   const fetchIssues = async (
-    githubToken: string,
-    repoOwner: string,
-    repoName: string
+    githubToken,
+    repoOwner,
+    repoName
   ) => {
     let resultFromAllPages = []
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       let result = await request('GET /repos/{owner}/{repo}/issues', {
         headers: {
-          authorization: githubToken as string,
+          authorization: githubToken,
         },
-        owner: repoOwner as string,
-        repo: repoName as string,
+        owner: repoOwner ,
+        repo: repoName ,
         per_page: 100,
         page: i,
       })
@@ -64,6 +64,21 @@ function SidebarSettings() {
       }
     }
     return resultFromAllPages
+  }
+
+  const fetchLabels = async (
+    githubToken,
+    repoOwner,
+    repoName
+  ) => {
+    let result = await request('GET /repos/{owner}/{repo}/labels', {
+      headers: {
+        authorization: githubToken ,
+      },
+      owner: repoOwner ,
+      repo: repoName ,
+    })
+    return result.data
   }
 
   const inputGroup = [
@@ -116,6 +131,7 @@ function SidebarSettings() {
               view="link"
               size="l"
               as="a"
+              target="_blank"
               href="http://consta.gazprom-neft.ru"
             >
               {' '}
@@ -164,6 +180,9 @@ function SidebarSettings() {
             if (githubToken && repoOwner && repoName) {
               fetchIssues(githubToken, repoOwner, repoName).then((data) => {
                 setIssuesList(data)
+              })
+              fetchLabels(githubToken, repoOwner, repoName).then((data) => {
+                setRepoLabelsList(data)
               })
             } else {
               alert('Не указан один из параметров запроса')

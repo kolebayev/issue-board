@@ -1,19 +1,8 @@
-import { createStore, action, Action } from 'easy-peasy'
+import { createStore, action } from 'easy-peasy'
+import stateIssuesList from './issues'
+import labels from './labels'
 
-export interface ModelTypes {
-  sidebarSettingsIsOpen: boolean
-  setSidebarSettingsIsOpen: Action<ModelTypes, boolean>
-  repoOwner: string | null
-  setRepoOwner: Action<ModelTypes, string>
-  repoName: string | null
-  setRepoName: Action<ModelTypes, string>
-  githubToken: string | null
-  setGithubToken: Action<ModelTypes, string>
-  issuesList: Object[] | null,
-  setIssuesList:  Action<ModelTypes, Object[]>
-}
-
-const model: ModelTypes = {
+const model = {
   sidebarSettingsIsOpen: false,
   setSidebarSettingsIsOpen: action((state, payload) => {
     state.sidebarSettingsIsOpen = payload
@@ -29,15 +18,23 @@ const model: ModelTypes = {
     state.repoName = payload
   }),
 
-  githubToken: null,
+  // githubToken: null,
+  githubToken: '1cd97e52c01a37b55de70a16809a3d56273d1a40',
   setGithubToken: action((state, payload) => {
     state.githubToken = payload
   }),
 
-  issuesList: null,
+  // issuesList: null,
+  issuesList: stateIssuesList,
   setIssuesList: action((state, payload) => {
     state.issuesList = [...payload]
-  })
+  }),
+
+  // repoLabelsList: null,
+  repoLabelsList: labels,
+  setRepoLabelsList: action((state, payload) => {
+    state.repoLabelsList = [...payload]
+  }),
 }
 
 const store = createStore(model)
