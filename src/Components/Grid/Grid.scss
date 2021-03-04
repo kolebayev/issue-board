@@ -1,9 +1,9 @@
 .Grid {
   display: grid;
   gap: 0 var(--space-l);
-  padding-bottom: var(--space-l);
+  // padding-bottom: var(--space-l);
   // 41 px = header height
-  height: calc(100vh - 41px - var(--space-l) * 2);
+  // height: calc(100vh - 41px - var(--space-l) * 2);
   &_cols_1 {
     grid-template-columns: 1fr;
   }
@@ -18,7 +18,7 @@
   }
   & > div {
     // background-color: var(--color-bg-secondary);
-    border: 1px solid var(--color-bg-border);
-    border-radius: 2px;
+    // border: 1px solid var(--color-bg-border);
+    // border-radius: 2px;
   }
 }

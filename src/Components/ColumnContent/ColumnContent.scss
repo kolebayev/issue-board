@@ -1,29 +1,26 @@
 .ColumnContent {
-  padding: 0 var(--space-s) var(--space-s) var(--space-s);
-  height: auto;
-  overflow: scroll;
-  //   background-color: var(--color-bg-ghost);
-  background-color: #f6f8fa;
   &_controls {
     display: flex;
-    flex-direction: row;
-    align-items: baseline;
-    // margin-bottom: var(--space-m);
-    position: sticky;
-    top: 0;
-    background-color: #f6f8fa;
-    z-index: 99;
-    padding-top: var(--space-s);
-    padding-bottom: var(--space-s);
+    align-items: center;
+    margin-bottom: var(--space-s);
+    z-index: 0;
+    position: relative;
     & > div.Select {
-      margin-right: var(--space-xs);
+      margin-right: var(--space-m);
     }
+  }
+  &_content {
+    padding: var(--space-s);
+    background-color: #f6f8fa;
+    border: 1px solid var(--color-bg-border);
+    border-radius: 2px;
+    height: calc(100vh - 41px - 32px - var(--space-s) * 2 - 40px);
+    overflow-y: scroll;
   }
 
   &_card {
     display: flex;
     flex-direction: column;
-    // height: 100px;
     height: fit-content;
     background-color: var(--color-bg-default);
     border: 1px solid var(--color-bg-border);
@@ -54,4 +51,66 @@
       }
     }
   }
+  &_centerWrapper {
+    height: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+  }
 }
+
+// .ColumnContent {
+//   display: flex;
+//   flex-direction: column;
+//   &_controls {
+
+//   }
+//   &_content {
+//     -ms-flex-grow: 1; /* IE10 syntax */
+//     flex-grow: 1;
+//     margin-right: 0;
+//     padding: 0 var(--space-s) var(--space-s) var(--space-s);
+//     height: auto;
+//     overflow: scroll;
+//     //   background-color: var(--color-bg-ghost);
+//     background-color: #f6f8fa;
+//     border: 1px solid var(--color-bg-border);
+//     border-radius: 2px;
+//   }
+
+//   &_card {
+//     display: flex;
+//     flex-direction: column;
+//     // height: 100px;
+//     height: fit-content;
+//     background-color: var(--color-bg-default);
+//     border: 1px solid var(--color-bg-border);
+//     margin-bottom: var(--space-m);
+//     border-radius: 4px;
+//     box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+//     padding: var(--space-s) var(--space-m) var(--space-m) var(--space-m);
+
+//     &_heading {
+//       margin-bottom: var(--space-2xs);
+//       text-decoration: none;
+//       &:hover {
+//         color: var(--color-typo-link);
+//       }
+//     }
+//     &_subHeading {
+//       margin-bottom: var(--space-xs);
+//       & > a {
+//         text-decoration: none;
+//         &:hover {
+//           color: var(--color-typo-link);
+//         }
+//       }
+//     }
+//     &_badgeGroup {
+//       &_badge {
+//         margin-right: var(--space-2xs);
+//       }
+//     }
+//   }
+// }
