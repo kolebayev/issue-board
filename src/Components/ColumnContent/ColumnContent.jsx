@@ -15,45 +15,34 @@ function ColumnContent() {
   const repoLabelsList = useStoreState((state) => state.repoLabelsList)
   const getFilterLabels = (labels) => setFilterLabels(labels)
 
-  // useEffect(() => {
-  //   repoLabelsList &&
-  //     setOptionsList([
-  //       ...repoLabelsList.map((item) => {
-  //         return { label: item.name, value: item.id + '' }
-  //       }),
-  //     ])
-  // }, [repoLabelsList])
-
   useEffect(() => {
+    // фильтрует список ишью по входящим лейблам из мультикомбобокса
     const filterIssues = (issue) => {
       const checker = (arr, target) =>
         target.every((item) => arr.includes(item))
       let filterLabelsList = filterLabels.map((value) => value.label)
       let issueLabels = issue.labels.map((item) => item.name)
-      // if (filterLabelsList.includes('_no label')) {
-      //   return issue.labels.length === 0 ? true : false
-      // }
+      // выбирает ишью без лейблов
+      if (filterLabelsList.includes('_no label') && issue.labels.length === 0) {
+        return true
+      }
+      // выбирает ишью без лейблов
       return checker(issueLabels, filterLabelsList) ? true : false
     }
     if (issuesList !== null && filterLabels !== null) {
       let filterResult = issuesList.filter(filterIssues)
 
-      // console.log(filterResult)
-
-      let filteredIssueNamesListClearedFromDuplicates = [
-        ...new Set(filterResult.map((item) => item.title)),
-      ]
-      console.log(filteredIssueNamesListClearedFromDuplicates)
-
-      let filterResultClearFromDuplicates = []
-      filteredIssueNamesListClearedFromDuplicates.forEach((item) => {
-        filterResultClearFromDuplicates.push(
-          ...filterResult.filter((issue) => issue.title === item)
-        )
+      // удаляет дубликаты после фильтрации
+      let filterResultUniqueNumbers = new Set([
+        ...filterResult.map((el) => el.number),
+      ])
+      let filterResultUnique = []
+      filterResultUniqueNumbers.forEach((el) => {
+        filterResultUnique.push(filterResult.find((item) => item.number === el))
       })
-      console.log(filterResultClearFromDuplicates)
+      // удаляет дубликаты после фильтрации
 
-      setFilteredIssues(filterResult)
+      setFilteredIssues(filterResultUnique)
     }
     if (filterLabels === null) {
       setFilteredIssues(null)
@@ -62,7 +51,6 @@ function ColumnContent() {
 
   return (
     <div className="ColumnContent">
-      {/* {issuesList && ( */}
       <div className="ColumnContent_controls">
         <CustomMultiCombobox
           items={repoLabelsList}
@@ -73,7 +61,6 @@ function ColumnContent() {
           label={filteredIssues ? filteredIssues.length : '-'}
         />
       </div>
-      {/* )} */}
 
       <div className="ColumnContent_content">
         {filteredIssues != null &&
@@ -134,25 +121,30 @@ function ColumnContent() {
         {filteredIssues === null && (
           <div className="ColumnContent_centerWrapper">
             <Text size="xs" view="ghost">
-              {filterLabels === null && 'Выбери фильтр'}
-              {filteredIssues != null && filteredIssues.length === 0 && (
-                <>
-                  <Text
-                    size="m"
-                    lineHeight="s"
-                    view="ghost"
-                    style={{ marginBottom: 'var(--space-xs)' }}
-                  >
-                    ¯\_(ツ)_/¯
-                  </Text>
-                  По{' '}
-                  {filterLabels != null && filterLabels.length > 1
-                    ? 'выбранным фильтрам'
-                    : 'выбранному фильтру'}
-                  <br /> результатов нет
-                </>
-              )}
+              Выбери фильтр
             </Text>
+          </div>
+        )}
+
+        {filteredIssues instanceof Array && filteredIssues.length === 0 && (
+          <div className="ColumnContent_centerWrapper">
+            <div>
+              <Text
+                size="m"
+                lineHeight="m"
+                view="ghost"
+                style={{ marginBottom: 'var(--space-xs)' }}
+              >
+                ¯\_(ツ)_/¯
+              </Text>
+              <Text size="xs" lineHeight="xs" view="ghost">
+                По
+                {filterLabels != null && filterLabels.length > 1
+                  ? ' выбранным фильтрам'
+                  : ' выбранному фильтру'}
+                <br /> результатов нет
+              </Text>
+            </div>
           </div>
         )}
       </div>

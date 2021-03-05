@@ -9,7 +9,6 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-
     &_logo {
       margin-right: var(--space-xs);
       height: 16px;
@@ -21,5 +20,14 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    &_module {
+      display: inherit;
+      flex-direction: inherit;
+      align-items: baseline;
+      margin-right: var(--space-l);
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
   }
 }

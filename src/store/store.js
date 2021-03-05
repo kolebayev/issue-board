@@ -25,12 +25,20 @@ const model = {
   }),
 
   // issuesList: null,
-  issuesList: stateIssuesList,
+  issuesList: stateIssuesList
+    .filter((item) => item.pull_request === undefined)
+    .filter((item) => item.closed_at === null),
   setIssuesList: action((state, payload) => {
-    state.issuesList = [...payload]
+    state.issuesList = [
+      // https://docs.github.com/en/rest/reference/issues#list-repository-issues
+      // note bout v3
+      ...payload
+        .filter((item) => item.pull_request === undefined)
+        .filter((item) => item.closed_at === null),
+    ]
   }),
 
-  // repoLabelsList: null,
+  // repoLabelsList: [],
   repoLabelsList: [
     { label: '_no label', value: 'no label' },
     ...labels.map((item) => {
@@ -45,6 +53,14 @@ const model = {
       }),
     ]
   }),
+
+  colsQty: 3,
+  setColsQty: action((state, payload) => {
+    state.colsQty = payload
+  }),
+
+  smallCards: false,
+  // setSmallCards
 }
 
 const store = createStore(model)

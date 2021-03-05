@@ -11,7 +11,8 @@ function App() {
   const sidebarSettingsIsOpen = useStoreState(
     (state) => state.sidebarSettingsIsOpen
   )
-  let columnsQuantity = 4
+  // let columnsQuantity = 4
+  const columnsQuantity = useStoreState((state) => state.colsQty)
 
   return (
     <Theme preset={presetGpnDefault}>
