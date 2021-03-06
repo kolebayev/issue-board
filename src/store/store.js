@@ -59,7 +59,7 @@ const model = {
     state.colsQty = payload
   }),
 
-  smallCards: false,
+  // smallCards: false,
   // setSmallCards
 }
 

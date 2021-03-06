@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './SidebarSettings.scss'
 import { Sidebar } from '@consta/uikit/Sidebar'
 import { Text } from '@consta/uikit/Text'
@@ -19,41 +19,32 @@ function SidebarSettings() {
   const closeSidebar = () => setSidebarSettingsIsOpen(!sidebarSettingsIsOpen)
 
   const repoOwner = useStoreState((state) => state.repoOwner)
-  const setRepoOwner = useStoreActions(
-    (actions) => actions.setRepoOwner
-  )
+  const setRepoOwner = useStoreActions((actions) => actions.setRepoOwner)
 
   const repoName = useStoreState((state) => state.repoName)
-  const setRepoName = useStoreActions(
-    (actions) => actions.setRepoName
-  )
+  const setRepoName = useStoreActions((actions) => actions.setRepoName)
 
   const githubToken = useStoreState((state) => state.githubToken)
-  const setGithubToken = useStoreActions(
-    (actions) => actions.setGithubToken
-  )
+  const setGithubToken = useStoreActions((actions) => actions.setGithubToken)
 
-  const setIssuesList = useStoreActions(
-    (actions) => actions.setIssuesList
-  )
+  const setIssuesList = useStoreActions((actions) => actions.setIssuesList)
 
   const setRepoLabelsList = useStoreActions(
     (actions) => actions.setRepoLabelsList
   )
 
-  const fetchIssues = async (
-    githubToken,
-    repoOwner,
-    repoName
-  ) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const fetchIssues = async (githubToken, repoOwner, repoName) => {
     let resultFromAllPages = []
-    for (let i = 0; i < 5; i++) {
+    // for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 1; i++) {
       let result = await request('GET /repos/{owner}/{repo}/issues', {
         headers: {
           authorization: githubToken,
         },
-        owner: repoOwner ,
-        repo: repoName ,
+        owner: repoOwner,
+        repo: repoName,
         per_page: 100,
         page: i,
       })
@@ -66,17 +57,13 @@ function SidebarSettings() {
     return resultFromAllPages
   }
 
-  const fetchLabels = async (
-    githubToken,
-    repoOwner,
-    repoName
-  ) => {
+  const fetchLabels = async (githubToken, repoOwner, repoName) => {
     let result = await request('GET /repos/{owner}/{repo}/labels', {
       headers: {
-        authorization: githubToken ,
+        authorization: githubToken,
       },
-      owner: repoOwner ,
-      repo: repoName ,
+      owner: repoOwner,
+      repo: repoName,
     })
     return result.data
   }
@@ -110,7 +97,7 @@ function SidebarSettings() {
         <div>
           <div className="SidebarSettings_mainHeading">
             <Text view="primary" weight="bold" size="3xl">
-              IssueDeck
+              IssueBoard
             </Text>
             <Button
               view="clear"
@@ -125,7 +112,7 @@ function SidebarSettings() {
             size="l"
             className="SidebarSettings_introParagraph"
           >
-            IssueDeck — утилита для просмотра issues в открытых репозиториях
+            IssueBoard — приложение для просмотра ишью в открытых репозиториях
             GitHub. По умолчанию подключен репозиторий дизайн-системы
             <Text
               view="link"
@@ -140,7 +127,7 @@ function SidebarSettings() {
             .
           </Text>
           <Informer
-            label="Для работы IssueDeck вам понадобится токен GitHub"
+            label="Для работы IssueBoard вам понадобится токен GitHub"
             view="filled"
             status="system"
             className="SidebarSettings_informer"
@@ -176,14 +163,22 @@ function SidebarSettings() {
           width="full"
           label="Загрузить issues"
           className="SidebarSettings_ctaButton"
-          onClick={() => {
+          loading={isLoading}
+          onClick={async () => {
+            setIsLoading(true)
             if (githubToken && repoOwner && repoName) {
-              fetchIssues(githubToken, repoOwner, repoName).then((data) => {
-                setIssuesList(data)
-              })
-              fetchLabels(githubToken, repoOwner, repoName).then((data) => {
-                setRepoLabelsList(data)
-              })
+              await fetchIssues(githubToken, repoOwner, repoName).then(
+                (data) => {
+                  setIssuesList(data)
+                }
+              )
+              await fetchLabels(githubToken, repoOwner, repoName).then(
+                (data) => {
+                  setRepoLabelsList(data)
+                }
+              )
+              await setIsLoading(false)
+              await setSidebarSettingsIsOpen(false)
             } else {
               alert('Не указан один из параметров запроса')
             }

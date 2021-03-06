@@ -15,16 +15,16 @@ function Header() {
     (state) => state.sidebarSettingsIsOpen
   )
   const setColsQty = useStoreActions((actions) => actions.setColsQty)
-  const issuesQty = useStoreState((state) => state.issuesList)
+  const issuesList = useStoreState((state) => state.issuesList)
   const items = ['2', '3', '4']
   const [value, setValue] = useState(items[1])
 
   return (
     <div className="Header">
       <div className="Header_leftSide">
-        <img src={logo} alt="Consta logo" className="Header_leftSide_logo" />
-        <Text view="primary" size="m">
-          IssueDeck
+        {/* <img src={logo} alt="Consta logo" className="Header_leftSide_logo" /> */}
+        <Text view="brand" size="m" weight="bold">
+          IssueBoard
         </Text>
       </div>
       <div className="Header_rightSide">
@@ -44,14 +44,15 @@ function Header() {
           />
         </div>
 
-        {/* <div className="Header_rightSide_module">
-          <Switch size="s" label="Мелкие карточки" checked={false} onChange={}/>
-        </div> */}
-        <div>{issuesQty.length}</div>
+        {issuesList && (
+          <div className="Header_rightSide_module">
+            <Text size="s">Загружено ишью {issuesList.length}</Text>
+          </div>
+        )}
 
         <div className="Header_rightSide_module">
           <Button
-            view="ghost"
+            view="primary"
             label="Что это такое?"
             size="xs"
             onClick={() => setSidebarSettingsIsOpen(!sidebarSettingsIsOpen)}
