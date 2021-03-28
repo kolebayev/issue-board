@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import './Header.scss'
 import { Text } from '@consta/uikit/Text'
 import { Button } from '@consta/uikit/Button'
-import { Switch } from '@consta/uikit/Switch'
+// import { Switch } from '@consta/uikit/Switch'
 import { ChoiceGroup } from '@consta/uikit/ChoiceGroup'
 import { useStoreActions, useStoreState } from 'easy-peasy'
-import logo from '../../images/logo.svg'
+// import logo from '../../images/logo.svg'
 
 function Header() {
   const setSidebarSettingsIsOpen = useStoreActions(

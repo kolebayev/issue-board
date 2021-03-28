@@ -1,3 +1,11 @@
+.placeholder {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
 .App {
   padding: 0 var(--space-l);
 }
