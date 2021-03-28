@@ -1,6 +1,6 @@
 import { createStore, action } from 'easy-peasy'
-import stateIssuesList from './issues'
-import labels from './labels'
+// import stateIssuesList from './issues'
+// import labels from './labels'
 
 const model = {
   sidebarSettingsIsOpen: false,
@@ -24,10 +24,10 @@ const model = {
     state.githubToken = payload
   }),
 
-  // issuesList: null,
-  issuesList: stateIssuesList
-    .filter((item) => item.pull_request === undefined)
-    .filter((item) => item.closed_at === null),
+  issuesList: null,
+  // issuesList: stateIssuesList
+  //   .filter((item) => item.pull_request === undefined)
+  //   .filter((item) => item.closed_at === null),
   setIssuesList: action((state, payload) => {
     state.issuesList = [
       // https://docs.github.com/en/rest/reference/issues#list-repository-issues
@@ -38,13 +38,13 @@ const model = {
     ]
   }),
 
-  // repoLabelsList: [],
-  repoLabelsList: [
-    { label: '_no label', value: 'no label' },
-    ...labels.map((item) => {
-      return { label: item.name, value: item.id + '' }
-    }),
-  ],
+  repoLabelsList: [],
+  // repoLabelsList: [
+  //   { label: '_no label', value: 'no label' },
+  //   ...labels.map((item) => {
+  //     return { label: item.name, value: item.id + '' }
+  //   }),
+  // ],
   setRepoLabelsList: action((state, payload) => {
     state.repoLabelsList = [
       { label: '_no label', value: 'no label' },
@@ -58,9 +58,6 @@ const model = {
   setColsQty: action((state, payload) => {
     state.colsQty = payload
   }),
-
-  // smallCards: false,
-  // setSmallCards
 }
 
 const store = createStore(model)

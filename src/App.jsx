@@ -16,14 +16,16 @@ function App() {
 
   return (
     <Theme preset={presetGpnDefault}>
-      {sidebarSettingsIsOpen && <SidebarSettings />}
-      <Header />
-      <div className="App">
-        <Grid cols={columnsQuantity}>
-          {[...new Array(columnsQuantity)].map((item, index) => {
-            return <ColumnContent key={index} />
-          })}
-        </Grid>
+      <div style={{ backgroundColor: 'var(--color-bg-primary)' }}>
+        {sidebarSettingsIsOpen && <SidebarSettings />}
+        <Header />
+        <div className="App">
+          <Grid cols={columnsQuantity}>
+            {[...new Array(columnsQuantity)].map((item, index) => {
+              return <ColumnContent key={index} />
+            })}
+          </Grid>
+        </div>
       </div>
     </Theme>
   )
