@@ -47,6 +47,7 @@ function SidebarSettings() {
         per_page: 100,
         page: i,
       })
+
       if (result.data.length === 0) {
         break
       } else {
@@ -180,6 +181,7 @@ function SidebarSettings() {
               await setSidebarSettingsIsOpen(false)
             } else {
               alert('Не указан один из параметров запроса')
+              setIsLoading(false)
             }
           }}
         />
