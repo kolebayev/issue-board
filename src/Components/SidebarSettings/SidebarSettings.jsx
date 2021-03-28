@@ -37,7 +37,7 @@ function SidebarSettings() {
 
   const fetchIssues = async (githubToken, repoOwner, repoName) => {
     let resultFromAllPages = []
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 10; i++) {
       let result = await request('GET /repos/{owner}/{repo}/issues', {
         headers: {
           authorization: githubToken,
