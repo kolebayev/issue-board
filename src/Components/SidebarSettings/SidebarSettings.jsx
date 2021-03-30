@@ -5,6 +5,7 @@ import { Text } from '@consta/uikit/Text'
 import { Informer } from '@consta/uikit/Informer'
 import { Button } from '@consta/uikit/Button'
 import { IconClose } from '@consta/uikit/IconClose'
+import { SnackBar, SnackBarItemStatus, Item } from '@consta/uikit/SnackBar'
 import InputWithLabel from '../InputWithLabel/InputWithLabel'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { request } from '@octokit/request'
@@ -33,6 +34,8 @@ function SidebarSettings() {
     (actions) => actions.setRepoLabelsList
   )
 
+  const [fetchErrorResponse, setFetchErrorResponse] = useState(null)
+
   const [isLoading, setIsLoading] = useState(false)
 
   const fetchIssues = async (githubToken, repoOwner, repoName) => {
@@ -47,7 +50,6 @@ function SidebarSettings() {
         per_page: 100,
         page: i,
       })
-
       if (result.data.length === 0) {
         break
       } else {
@@ -157,34 +159,60 @@ function SidebarSettings() {
             onInputChange={setGithubToken}
           />
         </div>
-        <Button
-          view="primary"
-          size="l"
-          width="full"
-          label="Загрузить issues"
-          className="SidebarSettings_ctaButton"
-          loading={isLoading}
-          onClick={async () => {
-            setIsLoading(true)
-            if (githubToken && repoOwner && repoName) {
-              await fetchIssues(githubToken, repoOwner, repoName).then(
-                (data) => {
-                  setIssuesList(data)
-                }
-              )
-              await fetchLabels(githubToken, repoOwner, repoName).then(
-                (data) => {
-                  setRepoLabelsList(data)
-                }
-              )
-              await setIsLoading(false)
-              await setSidebarSettingsIsOpen(false)
-            } else {
-              alert('Не указан один из параметров запроса')
-              setIsLoading(false)
-            }
-          }}
-        />
+        {fetchErrorResponse ? (
+          <SnackBar
+            onClose={() => setFetchErrorResponse(null)}
+            items={[
+              {
+                key: 1,
+                message: `${fetchErrorResponse.name} ${fetchErrorResponse.status}`,
+                status: 'alert',
+                autoClose: 5,
+                onCLose: () => setFetchErrorResponse(null),
+              },
+            ]}
+          />
+        ) : (
+          <Button
+            view="primary"
+            size="l"
+            width="full"
+            label="Загрузить issues"
+            className="SidebarSettings_ctaButton"
+            loading={isLoading}
+            onClick={() => {
+              setIsLoading(true)
+              if (githubToken && repoOwner && repoName) {
+                ;(async () => {
+                  await fetchIssues(githubToken, repoOwner, repoName).then(
+                    (data) => {
+                      setIssuesList(data)
+                    }
+                  )
+                  await fetchLabels(githubToken, repoOwner, repoName).then(
+                    (data) => {
+                      setRepoLabelsList(data)
+                    }
+                  )
+                })()
+                  .then(async () => {
+                    await setIsLoading(false)
+                    await setSidebarSettingsIsOpen(false)
+                  })
+                  .catch((err) => {
+                    setFetchErrorResponse(err)
+                    console.log(typeof err)
+                  })
+              } else {
+                setFetchErrorResponse({
+                  name: 'Не указан один из параметров запроса',
+                  status: '',
+                })
+                setIsLoading(false)
+              }
+            }}
+          />
+        )}
       </div>
     </Sidebar>
   )
