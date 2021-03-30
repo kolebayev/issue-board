@@ -4,6 +4,7 @@ import { Text } from '@consta/uikit/Text'
 import { Button } from '@consta/uikit/Button'
 // import { Switch } from '@consta/uikit/Switch'
 import { ChoiceGroup } from '@consta/uikit/ChoiceGroup'
+import { IconSettings } from '@consta/uikit/IconSettings'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 // import logo from '../../images/logo.svg'
 
@@ -24,7 +25,7 @@ function Header() {
       <div className="Header_leftSide">
         {/* <img src={logo} alt="Consta logo" className="Header_leftSide_logo" /> */}
         <Text view="brand" size="m" weight="bold">
-          IssueBoard
+          Issue Board
         </Text>
       </div>
       <div className="Header_rightSide">
@@ -52,9 +53,11 @@ function Header() {
 
         <div className="Header_rightSide_module">
           <Button
-            view="primary"
-            label="Что это такое?"
+            view="ghost"
+            // label="Что это такое?"
             size="xs"
+            iconRight={IconSettings}
+            onlyIcon
             onClick={() => setSidebarSettingsIsOpen(!sidebarSettingsIsOpen)}
           />
         </div>
