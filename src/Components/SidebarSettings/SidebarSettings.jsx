@@ -34,7 +34,7 @@ function SidebarSettings() {
     (actions) => actions.setRepoLabelsList
   )
 
-  const [fetchErrorResponse, setFetchErrorResponse] = useState(null)
+  const [fetchErrorResponse, setFetchErrorResponse] = useState([])
 
   const [isLoading, setIsLoading] = useState(false)
 
@@ -87,6 +87,7 @@ function SidebarSettings() {
       placeholder: 'Длинный набор букв и цифр',
     },
   ]
+  console.log(fetchErrorResponse)
   return (
     <Sidebar
       isOpen={sidebarSettingsIsOpen}
@@ -159,18 +160,10 @@ function SidebarSettings() {
             onInputChange={setGithubToken}
           />
         </div>
-        {fetchErrorResponse ? (
+        {fetchErrorResponse.length ? (
           <SnackBar
-            onClose={() => setFetchErrorResponse(null)}
-            items={[
-              {
-                key: 1,
-                message: `${fetchErrorResponse.name} ${fetchErrorResponse.status}`,
-                status: 'alert',
-                autoClose: 5,
-                onCLose: () => setFetchErrorResponse(null),
-              },
-            ]}
+            onClose={() => setFetchErrorResponse([])}
+            items={fetchErrorResponse}
           />
         ) : (
           <Button
@@ -200,8 +193,21 @@ function SidebarSettings() {
                     await setSidebarSettingsIsOpen(false)
                   })
                   .catch((err) => {
-                    setFetchErrorResponse(err)
-                    console.log(typeof err)
+                    setFetchErrorResponse([
+                      {
+                        key: 1,
+                        message: `${err.name} ${err.status}`,
+                        status: 'alert',
+                        autoClose: 5,
+                        // onCLose: () => {
+                        //   setFetchErrorResponse([])
+                        //   console.log('ХУЙ')
+                        // },
+                        onAutoClose: () => {
+                          setFetchErrorResponse([])
+                        },
+                      },
+                    ])
                   })
               } else {
                 setFetchErrorResponse({
