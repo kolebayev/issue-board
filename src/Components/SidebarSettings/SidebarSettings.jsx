@@ -5,10 +5,11 @@ import { Text } from '@consta/uikit/Text'
 import { Informer } from '@consta/uikit/Informer'
 import { Button } from '@consta/uikit/Button'
 import { IconClose } from '@consta/uikit/IconClose'
-import { SnackBar, SnackBarItemStatus, Item } from '@consta/uikit/SnackBar'
+import { SnackBar } from '@consta/uikit/SnackBar'
 import InputWithLabel from '../InputWithLabel/InputWithLabel'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { request } from '@octokit/request'
+import useLocalStorageState from '../../utils/useLocalStorageState'
 
 function SidebarSettings() {
   const setSidebarSettingsIsOpen = useStoreActions(
@@ -37,6 +38,12 @@ function SidebarSettings() {
   const [fetchErrorResponse, setFetchErrorResponse] = useState([])
 
   const [isLoading, setIsLoading] = useState(false)
+
+  const [localToken, setLocalToken] = useLocalStorageState('issBrdGhTkn', null)
+
+  React.useEffect(() => {
+    localToken !== 'null' && setGithubToken(localToken)
+  }, [localToken, setGithubToken])
 
   const fetchIssues = async (githubToken, repoOwner, repoName) => {
     let resultFromAllPages = []
@@ -87,7 +94,7 @@ function SidebarSettings() {
       placeholder: 'Длинный набор букв и цифр',
     },
   ]
-  console.log(fetchErrorResponse)
+
   return (
     <Sidebar
       isOpen={sidebarSettingsIsOpen}
@@ -164,6 +171,7 @@ function SidebarSettings() {
           <SnackBar
             onClose={() => setFetchErrorResponse([])}
             items={fetchErrorResponse}
+            className="SidebarSettings_snackBar"
           />
         ) : (
           <Button
@@ -189,6 +197,7 @@ function SidebarSettings() {
                   )
                 })()
                   .then(async () => {
+                    setLocalToken(githubToken)
                     await setIsLoading(false)
                     await setSidebarSettingsIsOpen(false)
                   })
@@ -198,22 +207,26 @@ function SidebarSettings() {
                         key: 1,
                         message: `${err.name} ${err.status}`,
                         status: 'alert',
-                        autoClose: 5,
-                        // onCLose: () => {
-                        //   setFetchErrorResponse([])
-                        //   console.log('ХУЙ')
-                        // },
+                        autoClose: 3,
                         onAutoClose: () => {
                           setFetchErrorResponse([])
                         },
                       },
                     ])
+                    setIsLoading(false)
                   })
               } else {
-                setFetchErrorResponse({
-                  name: 'Не указан один из параметров запроса',
-                  status: '',
-                })
+                setFetchErrorResponse([
+                  {
+                    key: 1,
+                    message: 'Не указан один из параметров запроса',
+                    status: 'alert',
+                    autoClose: 3,
+                    onAutoClose: () => {
+                      setFetchErrorResponse([])
+                    },
+                  },
+                ])
                 setIsLoading(false)
               }
             }}

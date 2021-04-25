@@ -11,8 +11,7 @@ function InputWithLabel({
   width,
   onInputChange,
 }) {
-  const handleChange = ({ value }) =>
-    onInputChange(value)
+  const handleChange = ({ value }) => onInputChange(value)
   return (
     <div className="InputWithLabel">
       <div className="InputWithLabel_label">

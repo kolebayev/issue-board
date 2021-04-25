@@ -24,4 +24,9 @@
   &_ctaButton {
     margin-top: var(--space-m);
   }
+  &_snackBar {
+    & > .SnackBar-Item {
+      margin-bottom: 0px;
+    }
+  }
 }
