@@ -3,7 +3,7 @@ import { createStore, action } from 'easy-peasy'
 // import labels from './labels'
 
 const model = {
-  sidebarSettingsIsOpen: false,
+  sidebarSettingsIsOpen: true,
   setSidebarSettingsIsOpen: action((state, payload) => {
     state.sidebarSettingsIsOpen = payload
   }),
