@@ -25,7 +25,7 @@ function Header() {
       <div className="Header_leftSide">
         {/* <img src={logo} alt="Consta logo" className="Header_leftSide_logo" /> */}
         <Text view="brand" size="m" weight="bold">
-          Issue Board
+          IssueBoard
         </Text>
       </div>
       <div className="Header_rightSide">
