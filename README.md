@@ -2,6 +2,8 @@
 
 # Issue Board
 
+> [DEMO](https://kolebayev.github.io/issue-board/)
+
 Issue Board — приложение для просмотра issue в открытых репозиториях GitHub.
 
 ## Фичи
