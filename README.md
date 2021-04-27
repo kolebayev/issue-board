@@ -1,3 +1,5 @@
+![alt text](./promo.png)
+
 # Issue Board
 
 Issue Board — приложение для просмотра ишью в открытых репозиториях GitHub.
