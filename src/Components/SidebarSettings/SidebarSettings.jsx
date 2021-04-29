@@ -113,12 +113,6 @@ function SidebarSettings() {
             </Text>
             .
           </Text>
-          <Informer
-            label="Для работы IssueBoard вам понадобится токен GitHub"
-            view="filled"
-            status="system"
-            className="SidebarSettings_informer"
-          />
           <InputWithLabel
             labelLeft={inputGroup[0].labelLeft}
             placeholder={inputGroup[0].placeholder}
