@@ -8,7 +8,7 @@ Issue Board — приложение для просмотра issue в откр
 
 ## Фичи
 
-- получение списка issue (необходим [токен Github](https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token))
+- получение списка issue
 - фильтрация по лейблам
 - возможность отображения данных в несколько колонок
 

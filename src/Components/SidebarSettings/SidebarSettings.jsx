@@ -9,7 +9,6 @@ import { SnackBar } from '@consta/uikit/SnackBar'
 import InputWithLabel from '../InputWithLabel/InputWithLabel'
 import { useStoreActions, useStoreState } from 'easy-peasy'
 import { request } from '@octokit/request'
-import useLocalStorageState from '../../utils/useLocalStorageState'
 
 function SidebarSettings() {
   const setSidebarSettingsIsOpen = useStoreActions(
@@ -26,9 +25,6 @@ function SidebarSettings() {
   const repoName = useStoreState((state) => state.repoName)
   const setRepoName = useStoreActions((actions) => actions.setRepoName)
 
-  const githubToken = useStoreState((state) => state.githubToken)
-  const setGithubToken = useStoreActions((actions) => actions.setGithubToken)
-
   const setIssuesList = useStoreActions((actions) => actions.setIssuesList)
 
   const setRepoLabelsList = useStoreActions(
@@ -39,19 +35,10 @@ function SidebarSettings() {
 
   const [isLoading, setIsLoading] = useState(false)
 
-  const [localToken, setLocalToken] = useLocalStorageState('issBrdGhTkn', null)
-
-  React.useEffect(() => {
-    localToken !== 'null' && setGithubToken(localToken)
-  }, [localToken, setGithubToken])
-
-  const fetchIssues = async (githubToken, repoOwner, repoName) => {
+  const fetchIssues = async (repoOwner, repoName) => {
     let resultFromAllPages = []
     for (let i = 0; i < 10; i++) {
       let result = await request('GET /repos/{owner}/{repo}/issues', {
-        headers: {
-          authorization: githubToken,
-        },
         owner: repoOwner,
         repo: repoName,
         per_page: 100,
@@ -66,11 +53,8 @@ function SidebarSettings() {
     return resultFromAllPages
   }
 
-  const fetchLabels = async (githubToken, repoOwner, repoName) => {
+  const fetchLabels = async (repoOwner, repoName) => {
     let result = await request('GET /repos/{owner}/{repo}/labels', {
-      headers: {
-        authorization: githubToken,
-      },
       owner: repoOwner,
       repo: repoName,
     })
@@ -80,18 +64,11 @@ function SidebarSettings() {
   const inputGroup = [
     {
       labelLeft: 'Владелец репозитория',
-      labelRight: null,
       placeholder: 'Пользователь GitHub или организация',
     },
     {
       labelLeft: 'Название репозитория',
-      labelRight: null,
       placeholder: 'Название',
-    },
-    {
-      labelLeft: 'Токен GitHub',
-      labelRight: 'Как получить',
-      placeholder: 'Длинный набор букв и цифр',
     },
   ]
 
@@ -144,7 +121,6 @@ function SidebarSettings() {
           />
           <InputWithLabel
             labelLeft={inputGroup[0].labelLeft}
-            labelRight={inputGroup[0].labelRight}
             placeholder={inputGroup[0].placeholder}
             width="full"
             defaultValue={repoOwner}
@@ -152,19 +128,10 @@ function SidebarSettings() {
           />
           <InputWithLabel
             labelLeft={inputGroup[1].labelLeft}
-            labelRight={inputGroup[1].labelRight}
             placeholder={inputGroup[1].placeholder}
             width="full"
             defaultValue={repoName}
             onInputChange={setRepoName}
-          />
-          <InputWithLabel
-            labelLeft={inputGroup[2].labelLeft}
-            labelRight={inputGroup[2].labelRight}
-            placeholder={inputGroup[2].placeholder}
-            width="full"
-            defaultValue={githubToken}
-            onInputChange={setGithubToken}
           />
         </div>
         {fetchErrorResponse.length ? (
@@ -183,21 +150,16 @@ function SidebarSettings() {
             loading={isLoading}
             onClick={() => {
               setIsLoading(true)
-              if (githubToken && repoOwner && repoName) {
+              if (repoOwner && repoName) {
                 ;(async () => {
-                  await fetchIssues(githubToken, repoOwner, repoName).then(
-                    (data) => {
-                      setIssuesList(data)
-                    }
-                  )
-                  await fetchLabels(githubToken, repoOwner, repoName).then(
-                    (data) => {
-                      setRepoLabelsList(data)
-                    }
-                  )
+                  await fetchIssues(repoOwner, repoName).then((data) => {
+                    setIssuesList(data)
+                  })
+                  await fetchLabels(repoOwner, repoName).then((data) => {
+                    setRepoLabelsList(data)
+                  })
                 })()
                   .then(async () => {
-                    setLocalToken(githubToken)
                     await setIsLoading(false)
                     await setSidebarSettingsIsOpen(false)
                   })

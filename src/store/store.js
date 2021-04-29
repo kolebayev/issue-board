@@ -18,12 +18,6 @@ const model = {
     state.repoName = payload
   }),
 
-  githubToken: null,
-  // githubToken: '1cd97e52c01a37b55de70a16809a3d56273d1a40',
-  setGithubToken: action((state, payload) => {
-    state.githubToken = payload
-  }),
-
   issuesList: null,
   // issuesList: stateIssuesList
   //   .filter((item) => item.pull_request === undefined)
