@@ -4,16 +4,16 @@
 
 > [DEMO](https://kolebayev.github.io/issue-board/)
 
-Issue Board — приложение для просмотра issue в открытых репозиториях GitHub.
+Issue Board — SPA displaying issues from public Github repos.
 
-## Фичи
+## Features
 
-- получение списка issue
-- фильтрация по лейблам
-- возможность отображения данных в несколько колонок
+- get issues list
+- filter by labels
+- 2/3/4 columns layout
 
-По умолчанию включен репозиторий [дизайн-системы Consta](http://consta.gazprom-neft.ru/)
+Default repo [Consta design system](https://consta.design/)
 
-## Сетап
+## Setup
 
-[Create React App](https://github.com/facebook/create-react-app) + [дизайн-система Consta](http://consta.gazprom-neft.ru/)
+[Create React App](https://github.com/facebook/create-react-app) + [Consta design system](https://consta.design/)
